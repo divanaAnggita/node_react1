@@ -7,10 +7,10 @@ const auth = require("./auth")
 //base url -> http:/localhost:2000/pegawai
 //import route pegawai
 const pegawai = require("./route/pegawai")
-app.use("/pegawai",auth, pegawai)
+app.use("/pegawai", auth, pegawai)
 
 const user = require("./route/user")
-app.use("/", user)
+app.use("/",auth, user)
 
 //membuat web server dengan port 2000
 app.listen(2000, () => {
