@@ -33,6 +33,10 @@ app.use("/pelanggaran_siswa", auth, pelanggaran_siswa)
 const detail_pelanggaran_siswa = require("./route/detail_pelanggaran_siswa")
 app.use("/detail_pelanggaran_siswa", auth, detail_pelanggaran_siswa)
 
+//jurusan
+const jurusan = require("./route/jurusan")
+app.use("/jurusan", auth, jurusan)
+
 //membuat web server dengan port 2000
 app.listen(2000, () => {
     console.log("server run on port 2000")
