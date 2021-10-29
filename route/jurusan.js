@@ -8,9 +8,9 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-// GET: /pegawai --> end point untuk mengakses data pegawai
+// GET: /jurusan --> end point untuk mengakses data pegawai
 app.get("/", (req,res) => {
-    let sql = "select * from pegawai"
+    let sql = "select * from jurusan"
     db.query(sql, (err, result) => {
         if (err) {
             throw err
@@ -18,7 +18,7 @@ app.get("/", (req,res) => {
         else{
             let response = {
                 count: result.length,
-                pegawai: result
+                jurusan: result
             }
         
             res.setHeader("Content-Type","application/json")
@@ -27,17 +27,17 @@ app.get("/", (req,res) => {
     })    
 })
 
-// POST: /pegawai --> end point untuk pencarian data pegawai
+// POST: /jurusan --> end point untuk pencarian data pegawai
 app.post("/", (req,res) => {
     let find = req.body.find
-    let sql = "select * from pegawai where id_pegawai like '%"+find+"%' or nama_pegawai like '%"+find+"%' or alamat like '%"+find+"%'"
+    let sql = "select * from jurusan where id_jurusan like '%"+find+"%' or nama_jurusan like '%"+find+"%' or kepanjangan like '%"+find+"%'"
     db.query(sql, (err, result) => {
         if (err) {
             throw err
         } else {
             let response = {
                 count: result.length,
-                pegawai: result
+                jurusan: result
             }
         
             res.setHeader("Content-Type","application/json")
@@ -46,16 +46,16 @@ app.post("/", (req,res) => {
     })
 })
 
-// POST: /pegawai/save --> end point untuk insert data pegawai
+// POST: /jurusan/save --> end point untuk insert data pegawai
 app.post("/save", (req,res) => {
     let data = {
-        id_pegawai: req.body.id_pegawai,
-        nama_pegawai: req.body.nama_pegawai,
-        alamat: req.body.alamat
+        id_jurusan: req.body.id_jurusan,
+        nama_jurusan: req.body.nama_jurusan,
+        kepanjangan: req.body.kepanjangan
     }
     let message = ""
 
-    let sql = "insert into pegawai set ?"
+    let sql = "insert into jurusan set ?"
     db.query(sql, data, (err,result) => {
         if (err) {
             message = err.message
@@ -71,16 +71,16 @@ app.post("/save", (req,res) => {
     })
 })
 
-// POST: /pegawai/update --> end point untuk update data pegawai
+// POST: /jurusan/update --> end point untuk update data pegawai
 app.post("/update", (req,res) => {
     let data = [{
-        id_pegawai: req.body.id_pegawai,
-        nama_pegawai: req.body.nama_pegawai,
-        alamat: req.body.alamat
-    }, req.body.id_pegawai]
+        id_jurusan: req.body.id_jurusan,
+        nama_jurusan: req.body.nama_jurusan,
+        kepanjangan: req.body.kepanjangan
+    }, req.body.id_jurusan]
     let message = ""
 
-    let sql = "update pegawai set ? where id_pegawai = ?"
+    let sql = "update jurusan set ? where id_jurusan = ?"
     db.query(sql, data, (err,result) => {
         if (err) {
             message = err.message
@@ -96,13 +96,13 @@ app.post("/update", (req,res) => {
     })
 })
 
-// DELETE: /pegawai/:id_pegawai --> end point untuk hapus data pegawai
-app.delete("/:id_pegawai", (req,res) => {
+// DELETE: /jurusan/:id_jurusan --> end point untuk hapus data pegawai
+app.delete("/:id_jurusan", (req,res) => {
     let data = {
-        id_pegawai : req.params.id_pegawai
+        id_jurusan : req.params.id_jurusan
     }
     let message = ""
-    let sql = "delete from pegawai where ?"
+    let sql = "delete from jurusan where ?"
     db.query(sql, data, (err,result) => {
         if (err) {
             message = err.message

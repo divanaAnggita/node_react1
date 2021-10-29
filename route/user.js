@@ -2,7 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 const db = require("../config") //import konfigurasi database
-const md5 = require("md5") //mengubah password menjadi format md5 (untuk melindungi data user dari kebocoran data)
+const md5 = require("md5") //mengubah password menjadi format md5 
 const jwt = require("jsonwebtoken")
 const SECRET_KEY = "BelajarNodeJSItuMenyengankan"
 
@@ -11,21 +11,15 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-//endpoint register
 app.post("/register", (req,res) => {
-    // prepare data
     let data = {
         email: req.body.email,
         username: req.body.username,
         password: md5(req.body.password)
-    } 
-        //bedanya aray = baris data ada nomer nya seperti gerbong kereta
-        //object = jenis jenis dari class, object satu kesatuan jika aray beda
+    }
 
-    // create sql query insert
     let sql = "insert into user set ?"
 
-    // run query
     db.query(sql, data, (error, result) => {
         let response = null
         if (error) {
@@ -37,14 +31,13 @@ app.post("/register", (req,res) => {
                 message: result.affectedRows + " user registered"
             }
         }
-        res.json(response) // send response
+        res.json(response)
     })
 })
-
 // endpoint login user (authentication)
 app.post("/login", (req, res) => {
     // tampung username dan password
-    let data = [
+    let param = [
         req.body.username, //username
         md5(req.body.password) // password
     ]
@@ -53,7 +46,7 @@ app.post("/login", (req, res) => {
     let sql = "select * from user where username = ? and password = ?"
 
     // run query
-    db.query(sql, data, (error, result) => {
+    db.query(sql, param, (error, result) => {
         if (error) throw error
 
         // cek jumlah data hasil query
@@ -67,8 +60,7 @@ app.post("/login", (req, res) => {
                 data: result,
                 token: token
             })
-        } 
-        else {
+        } else {
             // user tidak tersedia
             res.json({
                 message: "Invalid username/password"
